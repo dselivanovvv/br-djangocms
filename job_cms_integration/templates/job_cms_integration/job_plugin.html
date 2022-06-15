@@ -42,7 +42,7 @@
 
     <script>
         const swiper = new Swiper('.swiper', {
-            slidesPerView: 5,
+            slidesPerView: 4,
             navigation: {
                 nextEl: '.swiper-button-next',
                 prevEl: '.swiper-button-prev',
@@ -62,9 +62,12 @@
         height: 400px;
         margin: 0 auto;
         background: #f8f8f8;
-        padding: 0 40px;
+        padding: 0 50px;
         position: relative;
         overflow: hidden;
+    }
+    .swiper-wrapper {
+        overflow: auto;
     }
     .swiper-button-prev,
     .swiper-button-next {
