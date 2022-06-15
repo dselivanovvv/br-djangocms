@@ -1,0 +1,125 @@
+{% load cms_tags %}
+<h1>{{ instance.title }}</h1>
+{% if items_json %}
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+
+    <script type='text/javascript'>
+        var jobs = {{ items_json|safe }};
+    </script>
+
+    <div id="app">
+        <div class="swiper" >
+            <div class="swiper-button-next">&rightarrow;</div>
+            <div class="swiper-button-prev">&leftarrow;</div>
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" v-for="job in jobs.jobs">
+                    <div class="job-card">
+                        <img :src="job.img" ng-if="job.img" alt="" class="job-card__img">
+                        <div class="job-card__title">[[job.title]]</div>
+                        <div class="job-card__description">[[job.description]]</div>
+                        <div class="job-card__bottom">
+                            <div class="job-card__bottom__percent">[[job.engagement_percent]]%</div>&middot;
+                            <div class="job-card__bottom__contract">[[job.contract_period]]</div>&diams;
+                            <div class="job-card__bottom__location">[[job.location]]</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var app = new Vue({
+            delimiters: ['[[', ']]'],
+            el: '#app',
+            data: {
+                jobs: jobs,
+            },
+        });
+    </script>
+
+    <script>
+        const swiper = new Swiper('.swiper', {
+            slidesPerView: 5,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+    </script>
+
+{% else %}
+    <p>No job items available.</p>
+{% endif %}
+
+<style lang="scss">
+    * {
+        box-sizing: border-box;
+    }
+    .swiper {
+        height: 400px;
+        margin: 0 auto;
+        background: #f8f8f8;
+        padding: 0 40px;
+        position: relative;
+        overflow: hidden;
+    }
+    .swiper-button-prev,
+    .swiper-button-next {
+        color: black;
+        width: 30px;
+        height: 30px;
+        padding: 10px;
+        border: 1px solid #bbbbbb;
+        border-radius: 50%;
+        position: absolute;
+        top: 120px;
+    }
+    .swiper-button-prev.swiper-button-disabled,
+    .swiper-button-next.swiper-button-disabled{
+        display: none !important;
+    }
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+        content: "";
+    }
+    .swiper-slide {
+        width: 300px !important;
+        margin: 10px;
+        max-height: 600px;
+        height: auto;
+        padding-right: 20px;
+        border-right: 1px solid #d7d7d7;
+    }
+    .job-card {
+        position: relative;
+        height: 100%;
+    }
+        .job-card__img {
+            max-width: 100%;
+        }
+        .job-card__title {
+            font-size: 1.5em;
+            margin-top: 5px;
+        }
+        .job-card__description {
+            margin-top: 10px;
+        }
+        .job-card__bottom {
+            position: absolute;
+            bottom: 0;
+            display: flex;
+        }
+            .job-card__bottom__percent {
+                margin-right: 5px;
+            }
+            .job-card__bottom__contract {
+                margin-left: 5px;
+                margin-right: 30px;
+            }
+            .job-card__bottom__location {
+                margin-left: 5px;
+            }
+</style>
